@@ -18,6 +18,7 @@
   --display:"Libre Caslon Display","Bodoni 72",Didot,Georgia,serif;
   --body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
   --gutter:clamp(16px,4vw,56px);
+  --r:14px; --r-ctl:10px; --r-pill:999px;
   color-scheme:light;
 }
 [hidden]{display:none!important}
@@ -243,6 +244,16 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
   .announce{letter-spacing:.16em}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* Soft corners */
+.btn,.stepper,.size span,.field input,.field select,.field textarea,.pay label,.notice,.toast{border-radius:var(--r-ctl)}
+.chip,.badge,.draft{border-radius:var(--r-pill)}
+.hero-img,.hero-panel,.card .pic,.shape,.story img,.gallery img,.sum,.dd,.cat{border-radius:var(--r);overflow:hidden}
+.sumline img,.cartline img{border-radius:8px}
+.shape span,.cat span{border-top-right-radius:var(--r-ctl)}
+.drawer{border-radius:var(--r) 0 0 var(--r)}
+footer.site{border-radius:var(--r) var(--r) 0 0}
+.stepper button{border-radius:var(--r-ctl)}
+@media (max-width:430px){.drawer{border-radius:0}}
 </style>
 
 <div class="announce">The Art of Timeless Elegance</div>
