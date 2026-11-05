@@ -100,6 +100,8 @@ section.block{padding-bottom:clamp(56px,8vw,112px)}
 .dots{display:flex;gap:6px}
 .dot{width:12px;height:12px;border-radius:50%;border:1px solid rgba(29,33,32,.3);display:block}
 
+.row{--g:clamp(10px,1.6vw,24px);display:flex;gap:var(--g);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;padding-bottom:8px}
+.row .card{flex:0 0 calc((100% - 3*var(--g))/4);min-width:0;scroll-snap-align:start}
 .cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.6vw,24px)}
 .cat{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;text-decoration:none;background:var(--mist)}
 .cat img{height:100%;object-fit:cover;transition:transform .8s}
@@ -231,6 +233,7 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
   #menuBtn{display:inline-flex}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .shapes{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .row .card{flex-basis:calc((100% - var(--g))/2.3)}
   .hero{display:block}
   .hero-img{aspect-ratio:4/4.2;height:auto}
   .hero-panel{margin:-64px 16px 0 0;position:relative}
@@ -322,6 +325,7 @@ function card(p){return `<a class="card" href="#${p.id}"><span class="pic">${p.s
 function home(){const feat=['wide-trouser','column-dress','long-shirt','soft-blazer'].map(by);
 return `<div class="wrap"><div class="hero"><img class="hero-img" src="img/hero.webp" alt="Folds of sand-coloured cloth"><div class="hero-panel on-ink"><h1>Clothes that outlast the season</h1><p>Considered shapes in linen, poplin and satin, in colours that work together year after year.</p><a class="btn light" href="#shop">Shop the collection</a></div></div></div>
 <section class="block wrap"><div class="head"><h2>The essentials</h2><a class="textlink" href="#shop">View all</a></div><div class="grid">${feat.map(card).join('')}</div></section>
+<section class="block wrap"><div class="head"><h2>On Sale</h2><a class="textlink" href="#on-sale">View all</a></div><div class="row" role="region" aria-label="Products on sale" tabindex="0">${P.filter(p=>p.was&&!p.soldOut).map(card).join('')}</div></section>
 <section class="band on-ink"><div class="wrap"><span class="caps">On sale now</span><h2>Selected pieces, reduced</h2><p>A short edit of skirts, tops and trousers from earlier collections.</p><a class="btn light" href="#on-sale">Shop the sale</a></div></section>
 <section class="block wrap story"><img loading="lazy" src="img/story.webp" alt="Taupe cloth falling in soft folds"><div class="text"><span class="caps">About Elouve</span><h2>Less to choose, more to keep</h2><p>Elouve makes a small wardrobe of pieces that belong together. Each one starts with a clean line and a fabric that gets better with wear.</p><a class="btn ghost" href="#about">Read our story</a></div></section>`}
 
