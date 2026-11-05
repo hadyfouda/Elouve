@@ -244,6 +244,12 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
   .announce{letter-spacing:.16em}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* Best sellers panel */
+.bestpanel{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:clamp(20px,4vw,56px)}
+.bestpanel .price s{color:var(--on-ink-muted)}
+.bestpanel .badge{background:var(--paper);color:var(--ink)}
+.bestpanel .dot{border-color:rgba(241,238,234,.5)}
+.bestpanel .row{padding-bottom:4px}
 /* Soft corners */
 .btn,.stepper,.size span,.field input,.field select,.field textarea,.pay label,.notice,.toast{border-radius:var(--r-ctl)}
 .chip,.badge,.draft{border-radius:var(--r-pill)}
@@ -311,6 +317,8 @@ const P=[
 ];
 const SEASON={'wide-trouser':'Summer','column-dress':'Summer','long-shirt':'Summer','bias-skirt':'Summer','shell-top':'Summer','pleated-trouser':'Summer','evening-dress':'Summer','soft-blazer':'Winter','wool-trouser':'Winter','wool-skirt':'Winter','knit-dress':'Winter'};
 P.forEach(p=>p.season=SEASON[p.id]||'Summer');
+const BEST=['column-dress','soft-blazer','wool-trouser','knit-dress'];
+P.forEach(p=>p.best=BEST.includes(p.id));
 const SIZES=['XS','S','M','L','XL'];
 const GOV=['Cairo','Giza','Alexandria','Qalyubia','Dakahlia','Sharqia','Gharbia','Monufia','Beheira','Kafr El Sheikh','Damietta','Port Said','Ismailia','Suez','North Sinai','South Sinai','Faiyum','Beni Suef','Minya','Asyut','Sohag','Qena','Luxor','Aswan','Red Sea','New Valley','Matrouh'];
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -333,6 +341,7 @@ function home(){const feat=['wide-trouser','column-dress','long-shirt','soft-bla
 return `<div class="wrap"><div class="hero"><img class="hero-img" src="img/hero.webp" alt="Folds of sand-coloured cloth"><div class="hero-panel on-ink"><h1>Clothes that outlast the season</h1><p>Considered shapes in linen, poplin and satin, in colours that work together year after year.</p><a class="btn light" href="#shop">Shop the collection</a></div></div></div>
 <section class="block wrap"><div class="head"><h2>The essentials</h2><a class="textlink" href="#shop">View all</a></div><div class="grid">${feat.map(card).join('')}</div></section>
 <section class="block wrap"><div class="head"><h2>On Sale</h2><a class="textlink" href="#on-sale">View all</a></div><div class="row" role="region" aria-label="Products on sale" tabindex="0">${P.filter(p=>p.was&&!p.soldOut).map(card).join('')}</div></section>
+<section class="block wrap"><div class="bestpanel on-ink"><div class="head"><h2>Best Sellers</h2><a class="textlink" href="#shop">Shop all</a></div><div class="row" role="region" aria-label="Best sellers" tabindex="0">${P.filter(p=>p.best&&!p.soldOut).map(card).join('')}</div></div></section>
 <section class="block wrap story"><img loading="lazy" src="img/story.webp" alt="Taupe cloth falling in soft folds"><div class="text"><span class="caps">About Elouve</span><h2>Less to choose, more to keep</h2><p>Elouve makes a small wardrobe of pieces that belong together. Each one starts with a clean line and a fabric that gets better with wear.</p><a class="btn ghost" href="#about">Read our story</a></div></section>`}
 
 const F={cat:'All',color:'All',col:'All',sale:false,sort:'featured',q:''};
