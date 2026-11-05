@@ -110,7 +110,7 @@ section.block{padding-bottom:clamp(56px,8vw,112px)}
 .cat span{position:absolute;left:0;bottom:0;background:var(--paper);padding:6px 14px 2px 0;font-family:var(--display);font-size:clamp(1.05rem,2.4vw,2rem)}
 
 
-.story{display:grid;grid-template-columns:5fr 6fr;gap:clamp(24px,6vw,96px);align-items:center}
+.story{display:grid;grid-template-columns:minmax(0,1fr)}
 .story img{aspect-ratio:4/5;object-fit:cover}
 .story .text{display:grid;gap:20px;justify-items:start;max-width:52ch}
 .story h2{font-size:clamp(1.9rem,3.6vw,3.2rem)}
@@ -245,7 +245,7 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 /* Best sellers panel */
-.bestpanel{background:var(--ink);color:var(--on-ink);border-radius:var(--r);padding:clamp(20px,4vw,56px)}
+.bestpanel{background:linear-gradient(rgba(29,33,32,.5),rgba(29,33,32,.5)),#92826F url(img/story.webp) center/cover;color:var(--on-ink);border-radius:var(--r);padding:clamp(20px,4vw,56px)}
 .bestpanel .price s{color:var(--on-ink-muted)}
 .bestpanel .badge{background:var(--paper);color:var(--ink)}
 .bestpanel .dot{border-color:rgba(241,238,234,.5)}
@@ -342,7 +342,7 @@ return `<div class="wrap"><div class="hero"><img class="hero-img" src="img/hero.
 <section class="block wrap"><div class="head"><h2>The essentials</h2><a class="textlink" href="#shop">View all</a></div><div class="grid">${feat.map(card).join('')}</div></section>
 <section class="block wrap"><div class="head"><h2>On Sale</h2><a class="textlink" href="#on-sale">View all</a></div><div class="row" role="region" aria-label="Products on sale" tabindex="0">${P.filter(p=>p.was&&!p.soldOut).map(card).join('')}</div></section>
 <section class="block wrap"><div class="bestpanel on-ink"><div class="head"><h2>Best Sellers</h2><a class="textlink" href="#shop">Shop all</a></div><div class="row" role="region" aria-label="Best sellers" tabindex="0">${P.filter(p=>p.best&&!p.soldOut).map(card).join('')}</div></div></section>
-<section class="block wrap story"><img loading="lazy" src="img/story.webp" alt="Taupe cloth falling in soft folds"><div class="text"><span class="caps">About Elouve</span><h2>Less to choose, more to keep</h2><p>Elouve makes a small wardrobe of pieces that belong together. Each one starts with a clean line and a fabric that gets better with wear.</p><a class="btn ghost" href="#about">Read our story</a></div></section>`}
+<section class="block wrap story"><div class="text"><span class="caps">About Elouve</span><h2>Less to choose, more to keep</h2><p>Elouve makes a small wardrobe of pieces that belong together. Each one starts with a clean line and a fabric that gets better with wear.</p><a class="btn ghost" href="#about">Read our story</a></div></section>`}
 
 const F={cat:'All',color:'All',col:'All',sale:false,sort:'featured',q:''};
 const SHAPES=[['Trousers','trouser-sand'],['Dresses','dress-clay'],['Tops','top-chalk'],['Skirts','skirt-olive'],['Outerwear','blazer-taupe']];
