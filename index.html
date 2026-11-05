@@ -280,7 +280,7 @@ footer.site{border-radius:var(--r) var(--r) 0 0}
       <div class="navgrp"><button class="grpbtn" data-g="policies" data-tog="dd-policies" aria-expanded="false" aria-controls="dd-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="dd" id="dd-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></div>
     </nav>
-    <nav class="subnav" id="subNav" aria-label="Shop collections"><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></nav>
+    <nav class="subnav" id="subNav" aria-label="Shop collections"><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a><a href="#new-arrivals">New Arrivals</a></nav>
   </div>
   <div class="searchbar wrap" id="searchBar" hidden><form id="searchForm" role="search"><input id="searchInput" type="search" placeholder="Search the collection" aria-label="Search the collection"><button class="btn ghost" style="min-height:40px;padding:0 18px">Search</button></form></div>
 </header>
@@ -289,7 +289,7 @@ footer.site{border-radius:var(--r) var(--r) 0 0}
   <div class="wrap">
     <div class="fgrid">
       <div><img src="img/logo.png" alt="Elouve"><p class="tag">The Art of Timeless Elegance</p></div>
-      <div><span class="caps">Explore</span><a href="#shop">Shop</a><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a><a href="#about">About Elouve</a><a href="#contact">Contact</a></div>
+      <div><span class="caps">Explore</span><a href="#shop">Shop</a><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a><a href="#new-arrivals">New Arrivals</a><a href="#about">About Elouve</a><a href="#contact">Contact</a></div>
       <div><span class="caps">Policies</span><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div>
       <div><span class="caps">First to know</span><p>New pieces and private sales, by email.</p>
         <form class="news" id="newsForm"><input id="newsEmail" type="email" required placeholder="Email address" aria-label="Email address"><button>Join</button></form></div>
@@ -319,6 +319,8 @@ const SEASON={'wide-trouser':'Summer','column-dress':'Summer','long-shirt':'Summ
 P.forEach(p=>p.season=SEASON[p.id]||'Summer');
 const BEST=['column-dress','soft-blazer','wool-trouser','knit-dress'];
 P.forEach(p=>p.best=BEST.includes(p.id));
+const NEW=['soft-blazer','wool-trouser','wool-skirt','knit-dress'];
+P.forEach(p=>p.isNew=NEW.includes(p.id));
 const SIZES=['XS','S','M','L','XL'];
 const GOV=['Cairo','Giza','Alexandria','Qalyubia','Dakahlia','Sharqia','Gharbia','Monufia','Beheira','Kafr El Sheikh','Damietta','Port Said','Ismailia','Suez','North Sinai','South Sinai','Faiyum','Beni Suef','Minya','Asyut','Sohag','Qena','Luxor','Aswan','Red Sea','New Valley','Matrouh'];
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -334,7 +336,7 @@ const qty=()=>bag.reduce((a,l)=>a+l.q,0), subtotal=()=>bag.reduce((a,l)=>a+by(l.
 function updateCount(){const c=$('#cartCount'),n=qty();c.textContent=n;c.hidden=!n;$('#cartBtn').setAttribute('aria-label',`Open bag, ${n} item${n===1?'':'s'}`)}
 function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3200)}
 const price=p=>`<div class="price">${p.was?`<s aria-label="Was ${money(p.was)}">${money(p.was)}</s>`:''}<span>${money(p.price)}</span></div>`;
-function card(p){return `<a class="card" href="#${p.id}"><span class="pic">${p.soldOut?'<span class="badge out">Sold out</span>':p.was?'<span class="badge">Sale</span>':''}<img class="alt" loading="lazy" src="img/fabric-${p.colors[0]}.webp" alt=""><img loading="lazy" style="z-index:0" src="${img(p,p.colors[0])}" alt="${esc(p.name)} in ${COLORS[p.colors[0]][0]}"></span><h3>${esc(p.name)}</h3>${price(p)}<span class="dots">${p.colors.map(c=>`<span class="dot" style="background:${COLORS[c][1]}" title="${COLORS[c][0]}"></span>`).join('')}</span></a>`}
+function card(p){return `<a class="card" href="#${p.id}"><span class="pic">${p.soldOut?'<span class="badge out">Sold out</span>':p.was?'<span class="badge">Sale</span>':p.isNew?'<span class="badge">New</span>':''}<img class="alt" loading="lazy" src="img/fabric-${p.colors[0]}.webp" alt=""><img loading="lazy" style="z-index:0" src="${img(p,p.colors[0])}" alt="${esc(p.name)} in ${COLORS[p.colors[0]][0]}"></span><h3>${esc(p.name)}</h3>${price(p)}<span class="dots">${p.colors.map(c=>`<span class="dot" style="background:${COLORS[c][1]}" title="${COLORS[c][0]}"></span>`).join('')}</span></a>`}
 
 /* Views */
 function home(){const feat=['wide-trouser','column-dress','long-shirt','soft-blazer'].map(by);
@@ -346,7 +348,7 @@ return `<div class="wrap"><div class="hero"><img class="hero-img" src="img/hero.
 
 const F={cat:'All',color:'All',col:'All',sale:false,sort:'featured',q:''};
 const SHAPES=[['Trousers','trouser-sand'],['Dresses','dress-clay'],['Tops','top-chalk'],['Skirts','skirt-olive'],['Outerwear','blazer-taupe']];
-const COLL={shop:{t:'The collection'},'summer-collection':{t:'Summer Collection',col:'Summer'},'winter-collection':{t:'Winter Collection',col:'Winter'},'on-sale':{t:'On Sale',sale:true}};
+const COLL={shop:{t:'The collection'},'summer-collection':{t:'Summer Collection',col:'Summer'},'winter-collection':{t:'Winter Collection',col:'Winter'},'on-sale':{t:'On Sale',sale:true},'new-arrivals':{t:'New Arrivals',col:'New'}};
 let curR='shop',lastShopR=null,keepF=false;
 function closeDD(){$$('#mainNav .dd').forEach(d=>d.hidden=true);$$('#mainNav [data-tog]').forEach(b=>b.setAttribute('aria-expanded','false'))}
 function shop(){const cats=['All',...new Set(P.map(p=>p.cat))];
@@ -355,7 +357,7 @@ return `<div class="wrap"><div class="page-head"><h1>${F.q?`Results for “${esc
 <div class="shapes" role="group" aria-label="Shop by shape">${SHAPES.map(([c,i])=>`<button class="shape" data-cat="${c}" aria-pressed="${F.cat===c}"><img loading="lazy" src="img/${i}.webp" alt=""><span>${c}</span></button>`).join('')}</div>
 <div class="filters"><span class="small tnum" id="resultCount"></span><div class="end"><label class="small" for="sort">Sort <select id="sort"><option value="featured">Featured</option><option value="low">Price, low to high</option><option value="high">Price, high to low</option><option value="az">A to Z</option></select></label></div></div>
 <div id="results" style="padding-bottom:clamp(56px,8vw,112px)"></div></div>`}
-function renderResults(){let r=P.filter(p=>(F.cat==='All'||p.cat===F.cat)&&(F.col==='All'||p.season===F.col)&&(F.color==='All'||p.colors.includes(F.color))&&(!F.sale||p.was)&&(!F.q||(p.name+' '+p.cat+' '+p.colors.map(c=>COLORS[c][0]).join(' ')).toLowerCase().includes(F.q.toLowerCase())));
+function renderResults(){let r=P.filter(p=>(F.cat==='All'||p.cat===F.cat)&&(F.col==='All'||(F.col==='New'?p.isNew:p.season===F.col))&&(F.color==='All'||p.colors.includes(F.color))&&(!F.sale||p.was)&&(!F.q||(p.name+' '+p.cat+' '+p.colors.map(c=>COLORS[c][0]).join(' ')).toLowerCase().includes(F.q.toLowerCase())));
  if(F.sort==='low')r=[...r].sort((a,b)=>a.price-b.price);if(F.sort==='high')r=[...r].sort((a,b)=>b.price-a.price);if(F.sort==='az')r=[...r].sort((a,b)=>a.name.localeCompare(b.name));
  $('#resultCount').textContent=r.length+(r.length===1?' product':' products');
  $('#results').innerHTML=r.length?`<div class="grid">${r.map(card).join('')}</div>`:`<div class="empty"><h2>Nothing matches those filters</h2><button class="btn ghost" id="clearF">Clear filters</button></div>`;
@@ -427,7 +429,7 @@ overlays.addEventListener('click',e=>{const t=e.target.closest('[data-close],[da
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDD();if(overlays.innerHTML)closeOverlays()}});
 $('#cartBtn').onclick=openBag;
-$('#menuBtn').onclick=()=>{lastFocus=$('#menuBtn');overlays.innerHTML=`<nav class="mobile-nav" aria-label="Menu"><button class="icon-btn" data-close aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button><a href="#">Home</a><a href="#shop">Shop</a><div class="msub"><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></div><a href="#about">About Elouve</a><a href="#contact">Contact</a><div class="mrow"><button class="mtoggle" data-tog="m-policies" aria-expanded="false" aria-controls="m-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="msub" id="m-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></nav>`};
+$('#menuBtn').onclick=()=>{lastFocus=$('#menuBtn');overlays.innerHTML=`<nav class="mobile-nav" aria-label="Menu"><button class="icon-btn" data-close aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button><a href="#">Home</a><a href="#shop">Shop</a><div class="msub"><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a><a href="#new-arrivals">New Arrivals</a></div><a href="#about">About Elouve</a><a href="#contact">Contact</a><div class="mrow"><button class="mtoggle" data-tog="m-policies" aria-expanded="false" aria-controls="m-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="msub" id="m-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></nav>`};
 $('#searchBtn').onclick=()=>{const s=$('#searchBar'),open=s.hidden;s.hidden=!open;$('#searchBtn').setAttribute('aria-expanded',open);if(open)$('#searchInput').focus()};
 $('#searchForm').onsubmit=e=>{e.preventDefault();Object.assign(F,{q:$('#searchInput').value.trim(),cat:'All',color:'All',col:'All',sale:false});keepF=true;$('#searchBar').hidden=true;$('#searchBtn').setAttribute('aria-expanded',false);if(location.hash==='#shop')route();else location.hash='shop'};
 $('#newsForm').onsubmit=e=>{e.preventDefault();toast('Preview only: this email was not saved.');e.target.reset()};
