@@ -58,6 +58,14 @@ nav.main{display:flex;justify-content:center;gap:clamp(20px,3vw,44px);padding-bo
 nav.main a{text-decoration:none;font-size:.75rem;letter-spacing:.17em;text-transform:uppercase;padding:4px 0;border-bottom:1px solid transparent}
 nav.main a:hover,nav.main a[aria-current="page"]{border-bottom-color:var(--ink)}
 #menuBtn{display:none}
+.navgrp{position:relative;display:flex;align-items:center;gap:2px}
+nav.main .chev,nav.main .grpbtn{background:none;border:0;padding:4px;display:inline-flex;align-items:center;gap:6px;font-size:.75rem;letter-spacing:.17em;text-transform:uppercase;border-bottom:1px solid transparent}
+nav.main .grpbtn:hover,nav.main .grpbtn[aria-current]{border-bottom-color:var(--ink)}
+.chev svg,.grpbtn svg,.mchev svg,.mtoggle svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .2s}
+.chev[aria-expanded="true"] svg,.grpbtn[aria-expanded="true"] svg,.mchev[aria-expanded="true"] svg,.mtoggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.dd{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:12px;min-width:230px;background:var(--paper);border:1px solid var(--line);padding:8px 0;z-index:12;display:grid}
+nav.main .dd a{padding:11px 22px;white-space:nowrap;border-bottom:0}
+nav.main .dd a:hover{background:var(--mist);border-bottom-color:transparent}
 .count{position:absolute;top:2px;right:0;min-width:17px;height:17px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:.64rem;display:grid;place-items:center}
 .searchbar{border-top:1px solid var(--line);padding-block:12px}
 .searchbar form{display:flex;gap:12px;max-width:640px;margin:auto}
@@ -184,10 +192,19 @@ details p{padding-top:9px;color:var(--muted);font-size:.92rem}
 .mobile-nav{position:fixed;inset:0;background:var(--paper);z-index:21;padding:calc(env(safe-area-inset-top,0px) + 14px) max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:6px}
 .mobile-nav a{font-family:var(--display);font-size:2.2rem;text-decoration:none;padding:7px 0;border-bottom:1px solid var(--line)}
 .mobile-nav .icon-btn{align-self:flex-end}
+.mobile-nav{overflow-y:auto}
+.mobile-nav .mrow{display:flex;align-items:stretch;border-bottom:1px solid var(--line)}
+.mobile-nav .mrow a{flex:1;border-bottom:0}
+.mobile-nav .mchev{background:none;border:0;border-left:1px solid var(--line);padding:0 20px;display:grid;place-items:center}
+.mobile-nav .mchev svg,.mobile-nav .mtoggle svg{width:18px;height:18px}
+.mobile-nav .mtoggle{flex:1;background:none;border:0;padding:7px 0;display:flex;justify-content:space-between;align-items:center;font-family:var(--display);font-size:2.2rem;text-align:left}
+.mobile-nav .mtoggle svg{margin-right:20px}
+.mobile-nav .msub{display:grid;border-bottom:1px solid var(--line);padding-bottom:6px}
+.mobile-nav .msub a{font-family:var(--body);font-size:1rem;letter-spacing:.14em;text-transform:uppercase;padding:12px 0 12px 18px;border-bottom:0}
 
 /* Footer */
 footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6vw,80px) 28px}
-.fgrid{display:grid;grid-template-columns:2fr 1fr 2fr;gap:36px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 2fr;gap:36px}
 .fgrid img{width:150px;filter:brightness(0) invert(.94)}
 .fgrid a{display:block;text-decoration:none;padding:3px 0;font-size:.92rem}
 .fgrid a:hover{text-decoration:underline}
@@ -231,7 +248,12 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
       <div class="right"><button class="icon-btn" id="cartBtn" aria-label="Open bag"><svg viewBox="0 0 24 24"><path d="M5 8h14l1 13H4zM9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="count tnum" id="cartCount" hidden>0</span></button></div>
     </div>
     <nav class="main" id="mainNav" aria-label="Main">
-      <a href="#" data-r="">Home</a><a href="#shop" data-r="shop">Shop</a><a href="#about" data-r="about">About Elouve</a><a href="#exchange" data-r="exchange">Exchange &amp; Refund</a><a href="#contact" data-r="contact">Contact</a>
+      <a href="#" data-g="">Home</a>
+      <div class="navgrp"><a href="#shop" data-g="shop">Shop</a><button class="chev" data-tog="dd-shop" aria-expanded="false" aria-controls="dd-shop" aria-label="Shop menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="dd" id="dd-shop" hidden><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></div></div>
+      <a href="#about" data-g="about">About Elouve</a><a href="#contact" data-g="contact">Contact</a>
+      <div class="navgrp"><button class="grpbtn" data-g="policies" data-tog="dd-policies" aria-expanded="false" aria-controls="dd-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="dd" id="dd-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></div>
     </nav>
   </div>
   <div class="searchbar wrap" id="searchBar" hidden><form id="searchForm" role="search"><input id="searchInput" type="search" placeholder="Search the collection" aria-label="Search the collection"><button class="btn ghost" style="min-height:40px;padding:0 18px">Search</button></form></div>
@@ -241,7 +263,8 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
   <div class="wrap">
     <div class="fgrid">
       <div><img src="img/logo.png" alt="Elouve"><p class="tag">The Art of Timeless Elegance</p></div>
-      <div><span class="caps">Explore</span><a href="#shop">Shop</a><a href="#about">About Elouve</a><a href="#exchange">Exchange &amp; Refund</a><a href="#contact">Contact</a></div>
+      <div><span class="caps">Explore</span><a href="#shop">Shop</a><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a><a href="#about">About Elouve</a><a href="#contact">Contact</a></div>
+      <div><span class="caps">Policies</span><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div>
       <div><span class="caps">First to know</span><p>New pieces and private sales, by email.</p>
         <form class="news" id="newsForm"><input id="newsEmail" type="email" required placeholder="Email address" aria-label="Email address"><button>Join</button></form></div>
     </div>
@@ -262,7 +285,12 @@ const P=[
  {id:'shell-top',name:'The Shell Top',cat:'Tops',shape:'top',price:950,was:1200,colors:['ink','chalk','clay'],soldSizes:['XS'],desc:'A clean sleeveless top with a high round neck, made to sit under tailoring or alone.',fabric:'Washed cotton. Cool wash, dry flat.'},
  {id:'pleated-trouser',name:'The Pleated Trouser',cat:'Trousers',shape:'trouser',price:1500,was:1850,colors:['olive','ink'],soldSizes:['M'],desc:'A fuller trouser with a deep front pleat and a clean waistband.',fabric:'Linen-viscose blend. Cool wash, warm iron.'},
  {id:'evening-dress',name:'The Evening Dress',cat:'Dresses',shape:'dress',price:2600,colors:['clay'],soldOut:true,soldSizes:[],desc:'The same long line as our column dress, in a warmer shade for after dark.',fabric:'Heavy cotton poplin. Cool wash, line dry.'}
+,{id:'wool-trouser',name:'The Wool Trouser',cat:'Trousers',shape:'trouser',price:1950,colors:['ink','olive'],soldSizes:[],desc:'A warmer take on the wide trouser, with the same high waist and a heavier drape for cold mornings.',fabric:'Wool-blend suiting. Dry clean only.'},
+ {id:'wool-skirt',name:'The Wool Skirt',cat:'Skirts',shape:'skirt',price:1700,was:2100,colors:['taupe','olive'],soldSizes:['S'],desc:'A long skirt in a brushed wool blend that flares softly from the hip.',fabric:'Brushed wool blend. Dry clean only.'},
+ {id:'knit-dress',name:'The Knit Dress',cat:'Dresses',shape:'dress',price:2400,colors:['ink','clay'],soldSizes:[],desc:'A close, long dress in fine knit, made to wear under a coat all winter.',fabric:'Fine wool-blend jersey. Hand wash cool, dry flat.'}
 ];
+const SEASON={'wide-trouser':'Summer','column-dress':'Summer','long-shirt':'Summer','bias-skirt':'Summer','shell-top':'Summer','pleated-trouser':'Summer','evening-dress':'Summer','soft-blazer':'Winter','wool-trouser':'Winter','wool-skirt':'Winter','knit-dress':'Winter'};
+P.forEach(p=>p.season=SEASON[p.id]||'Summer');
 const SIZES=['XS','S','M','L','XL'];
 const GOV=['Cairo','Giza','Alexandria','Qalyubia','Dakahlia','Sharqia','Gharbia','Monufia','Beheira','Kafr El Sheikh','Damietta','Port Said','Ismailia','Suez','North Sinai','South Sinai','Faiyum','Beni Suef','Minya','Asyut','Sohag','Qena','Luxor','Aswan','Red Sea','New Valley','Matrouh'];
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -285,17 +313,20 @@ function home(){const feat=['wide-trouser','column-dress','long-shirt','soft-bla
 return `<div class="wrap"><div class="hero"><img class="hero-img" src="img/hero.webp" alt="Folds of sand-coloured cloth"><div class="hero-panel on-ink"><h1>Clothes that outlast the season</h1><p>Considered shapes in linen, poplin and satin, in colours that work together year after year.</p><a class="btn light" href="#shop">Shop the collection</a></div></div></div>
 <section class="block wrap"><div class="head"><h2>The essentials</h2><a class="textlink" href="#shop">View all</a></div><div class="grid">${feat.map(card).join('')}</div></section>
 <section class="block wrap"><div class="head"><h2>Shop by shape</h2></div><div class="cats">${[['Trousers','trouser-sand'],['Dresses','dress-clay'],['Outerwear','blazer-taupe']].map(([c,i])=>`<a class="cat" href="#shop" data-cat="${c}"><img loading="lazy" src="img/${i}.webp" alt=""><span>${c}</span></a>`).join('')}</div></section>
-<section class="band on-ink"><div class="wrap"><span class="caps">On sale now</span><h2>Selected pieces, reduced</h2><p>A short edit of skirts, tops and trousers from earlier collections.</p><a class="btn light" href="#shop" data-sale="1">Shop the sale</a></div></section>
+<section class="band on-ink"><div class="wrap"><span class="caps">On sale now</span><h2>Selected pieces, reduced</h2><p>A short edit of skirts, tops and trousers from earlier collections.</p><a class="btn light" href="#on-sale">Shop the sale</a></div></section>
 <section class="block wrap story"><img loading="lazy" src="img/story.webp" alt="Taupe cloth falling in soft folds"><div class="text"><span class="caps">About Elouve</span><h2>Less to choose, more to keep</h2><p>Elouve makes a small wardrobe of pieces that belong together. Each one starts with a clean line and a fabric that gets better with wear.</p><a class="btn ghost" href="#about">Read our story</a></div></section>`}
 
-const F={cat:'All',color:'All',sale:false,sort:'featured',q:''};
+const F={cat:'All',color:'All',col:'All',sale:false,sort:'featured',q:''};
+const COLL={shop:{t:'The collection'},'summer-collection':{t:'Summer Collection',col:'Summer'},'winter-collection':{t:'Winter Collection',col:'Winter'},'on-sale':{t:'On Sale',sale:true}};
+let curR='shop',lastShopR=null,keepF=false;
+function closeDD(){$$('#mainNav .dd').forEach(d=>d.hidden=true);$$('#mainNav [data-tog]').forEach(b=>b.setAttribute('aria-expanded','false'))}
 function shop(){const cats=['All',...new Set(P.map(p=>p.cat))];
-return `<div class="wrap"><div class="page-head"><h1>${F.q?`Results for “${esc(F.q)}”`:'The collection'}</h1><p>Sample products and prices, ready to swap for your real catalogue.</p></div>
+return `<div class="wrap"><div class="page-head"><h1>${F.q?`Results for “${esc(F.q)}”`:COLL[curR].t}</h1><p>Sample products and prices, ready to swap for your real catalogue.</p></div>
 <div class="filters"><div class="chips" role="group" aria-label="Category">${cats.map(c=>`<button class="chip" data-f="cat" data-v="${c}" aria-pressed="${F.cat===c}">${c}</button>`).join('')}</div>
 <div class="chips" role="group" aria-label="Colour"><button class="chip" data-f="color" data-v="All" aria-pressed="${F.color==='All'}">All colours</button>${Object.keys(COLORS).map(c=>`<button class="chip" data-f="color" data-v="${c}" aria-pressed="${F.color===c}">${COLORS[c][0]}</button>`).join('')}</div>
 <div class="end"><button class="chip" data-f="sale" aria-pressed="${F.sale}">On sale</button><label class="small" for="sort">Sort <select id="sort"><option value="featured">Featured</option><option value="low">Price, low to high</option><option value="high">Price, high to low</option><option value="az">A to Z</option></select></label><span class="small tnum" id="resultCount"></span></div></div>
 <div id="results" style="padding-bottom:clamp(56px,8vw,112px)"></div></div>`}
-function renderResults(){let r=P.filter(p=>(F.cat==='All'||p.cat===F.cat)&&(F.color==='All'||p.colors.includes(F.color))&&(!F.sale||p.was)&&(!F.q||(p.name+' '+p.cat+' '+p.colors.map(c=>COLORS[c][0]).join(' ')).toLowerCase().includes(F.q.toLowerCase())));
+function renderResults(){let r=P.filter(p=>(F.cat==='All'||p.cat===F.cat)&&(F.col==='All'||p.season===F.col)&&(F.color==='All'||p.colors.includes(F.color))&&(!F.sale||p.was)&&(!F.q||(p.name+' '+p.cat+' '+p.colors.map(c=>COLORS[c][0]).join(' ')).toLowerCase().includes(F.q.toLowerCase())));
  if(F.sort==='low')r=[...r].sort((a,b)=>a.price-b.price);if(F.sort==='high')r=[...r].sort((a,b)=>b.price-a.price);if(F.sort==='az')r=[...r].sort((a,b)=>a.name.localeCompare(b.name));
  $('#resultCount').textContent=r.length+(r.length===1?' product':' products');
  $('#results').innerHTML=r.length?`<div class="grid">${r.map(card).join('')}</div>`:`<div class="empty"><h2>Nothing matches those filters</h2><button class="btn ghost" id="clearF">Clear filters</button></div>`;
@@ -321,6 +352,8 @@ const about=()=>`<div class="wrap"><div class="page-head"><h1>About Elouve</h1><
 const exchange=()=>`<div class="wrap"><div class="page-head"><h1>Exchange &amp; Refund</h1></div><div class="prose"><p><span class="draft">Template, not your policy</span></p><p>Fill in the bracketed points with your actual terms before launch.</p><h2>Exchanges</h2><p>Items can be exchanged within [number] days of delivery, unworn and with tags attached.</p><h2>Refunds</h2><p>Refunds are issued [how and when] once the item has been received and checked.</p><h2>Items we can't accept</h2><p>[List any final-sale items, such as sale pieces or underwear.]</p><h2>Delivery costs</h2><p>[Who pays for delivery on an exchange or a return.]</p></div></div>`;
 const contact=()=>`<div class="wrap"><div class="page-head"><h1>Contact</h1><p>Questions on sizing, orders or anything else.</p></div><div class="twoc"><form class="form" id="contactForm"><div class="field"><label for="cn">Name</label><input id="cn" required autocomplete="name"></div><div class="field"><label for="ce">Email or phone</label><input id="ce" required></div><div class="field"><label for="cm">Message</label><textarea id="cm" rows="5" required></textarea></div><button class="btn" style="justify-self:start">Send message</button></form>
 <div style="display:grid;gap:14px;align-content:start"><p><span class="draft">Add your details</span></p><p>WhatsApp: [number]</p><p>Email: [address]</p><p>Instagram: [handle]</p><p>Hours: [days and times]</p></div></div></div>`;
+const shipping=()=>`<div class="wrap"><div class="page-head"><h1>Shipping &amp; Delivery</h1></div><div class="prose"><p><span class="draft">Template, not your policy</span></p><h2>Delivery areas</h2><p>[List the governorates you deliver to.]</p><h2>Delivery time</h2><p>[Typical days for Cairo and Giza, and for other governorates.]</p><h2>Delivery fees</h2><p>[Fee by governorate, and any free-delivery threshold.]</p><h2>Tracking</h2><p>[How customers are told their order is on its way.]</p></div></div>`;
+const privacy=()=>`<div class="wrap"><div class="page-head"><h1>Privacy Policy</h1></div><div class="prose"><p><span class="draft">Template, not your policy</span></p><h2>What we collect</h2><p>[Name, phone number, address and order details needed to deliver an order.]</p><h2>How we use it</h2><p>[To prepare, deliver and support orders, and to send updates if the customer agrees.]</p><h2>Who we share it with</h2><p>[Delivery partners and payment providers only.]</p><h2>Your choices</h2><p>[How to ask for a copy of your data, or to have it deleted.]</p></div></div>`;
 function checkout(){if(!bag.length)return `<div class="wrap empty" style="padding-block:90px"><h1 style="font-size:2.6rem">Your bag is empty</h1><a class="btn" href="#shop">Shop the collection</a></div>`;
  return `<div class="wrap"><div class="page-head"><h1>Checkout</h1></div><div class="twoc"><form class="form" id="coForm"><div class="notice">Preview only. Placing an order here won't send it anywhere until a store backend is connected.</div>
  <div class="row"><div class="field"><label for="fn">Full name</label><input id="fn" required autocomplete="name"></div><div class="field"><label for="ph">Mobile number</label><input id="ph" type="tel" required pattern="[0-9+ ]{10,15}" autocomplete="tel"></div></div>
@@ -330,20 +363,24 @@ function checkout(){if(!bag.length)return `<div class="wrap empty" style="paddin
  <button class="btn">Place order</button></form>
  <aside class="sum" aria-label="Order summary"><span class="caps">Your order</span>${bag.map(l=>{const p=by(l.id);return `<div class="sumline"><img src="${img(p,l.c)}" alt=""><div>${esc(p.name)}<div class="small">${COLORS[l.c][0]} / ${l.s} / Qty ${l.q}</div></div><span class="tnum">${money(p.price*l.q)}</span></div>`}).join('')}<div class="totals tnum"><div><span>Subtotal</span><span>${money(subtotal())}</span></div><div class="small"><span>Delivery</span><span>Set your fees</span></div><div class="grand"><span>Total before delivery</span><span>${money(subtotal())}</span></div></div></aside></div></div>`}
 
-function route(){const r=location.hash.slice(1);const p=by(r);
- $$('#mainNav a').forEach(a=>{a.dataset.r===(p?'shop':r)?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current')});
- document.title=p?p.name+' | Elouve':'Elouve';
+function route(){const r=location.hash.slice(1);const p=by(r);const c=COLL[r];
+ if(c){if(!keepF&&r!==lastShopR)Object.assign(F,{cat:'All',color:'All',col:'All',sale:false,q:''});F.col=c.col||'All';if(c.sale)F.sale=true;curR=r;lastShopR=r}
+ const g=(p||c)?'shop':(['exchange','shipping','privacy'].includes(r)?'policies':r);
+ $$('#mainNav [data-g]').forEach(a=>a.dataset.g===g?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ document.title=p?p.name+' | Elouve':(c&&r!=='shop'?c.t+' | Elouve':'Elouve');
  if(p)product(p);
- else if(r==='shop'){app.innerHTML=shop();$('#sort').value=F.sort;renderResults();
+ else if(c){app.innerHTML=shop();$('#sort').value=F.sort;renderResults();
    $$('.filters .chip').forEach(b=>b.onclick=()=>{const k=b.dataset.f;if(k==='sale')F.sale=!F.sale;else F[k]=b.dataset.v;
      $$('.filters .chip').forEach(x=>x.setAttribute('aria-pressed',x.dataset.f==='sale'?F.sale:F[x.dataset.f]===x.dataset.v));renderResults()});
    $('#sort').onchange=e=>{F.sort=e.target.value;renderResults()};}
  else if(r==='about')app.innerHTML=about();
+ else if(r==='shipping')app.innerHTML=shipping();
+ else if(r==='privacy')app.innerHTML=privacy();
  else if(r==='exchange')app.innerHTML=exchange();
  else if(r==='contact'){app.innerHTML=contact();$('#contactForm').onsubmit=e=>{e.preventDefault();toast('Preview only: this message was not sent.')}}
  else if(r==='checkout'){app.innerHTML=checkout();const f=$('#coForm');if(f)f.onsubmit=e=>{e.preventDefault();bag=[];save();app.innerHTML=`<div class="wrap empty" style="padding-block:90px"><h1 style="font-size:2.8rem">The order flow works</h1><p style="max-width:48ch">This is a preview, so no order was placed and nothing was sent. Connecting a store backend makes this step real.</p><a class="btn" href="#shop">Back to the collection</a></div>`;scrollTo(0,0)}}
  else app.innerHTML=home();
- closeOverlays();scrollTo({top:0,behavior:'auto'});
+ closeOverlays();closeDD();keepF=false;scrollTo({top:0,behavior:'auto'});
 }
 /* Bag drawer + mobile menu */
 let lastFocus;
@@ -353,22 +390,25 @@ function bagHTML(){return `<div class="scrim" data-close></div><aside class="dra
  <div class="totals tnum"><div class="grand"><span>Subtotal</span><span>${money(subtotal())}</span></div><p class="small">Delivery is added at checkout.</p></div><a class="btn" href="#checkout">Checkout</a>`
  :`<div class="lines"><p class="small">Nothing here yet. Your selections will appear in this bag.</p></div><a class="btn ghost" href="#shop">Shop the collection</a>`}</aside>`}
 function openBag(){lastFocus=lastFocus||document.activeElement;overlays.innerHTML=bagHTML();$('.drawer button',overlays).focus()}
-overlays.addEventListener('click',e=>{const t=e.target.closest('[data-close],[data-inc],[data-dec],[data-rm],a');if(!t)return;
+overlays.addEventListener('click',e=>{const t=e.target.closest('[data-close],[data-inc],[data-dec],[data-rm],[data-tog],a');if(!t)return;
+ if(t.dataset.tog){const d=document.getElementById(t.dataset.tog),o=d.hidden;d.hidden=!o;t.setAttribute('aria-expanded',o);return}
  if(t.matches('a')){if(t.getAttribute('href')==='#'+location.hash.slice(1))closeOverlays();return}
  if(t.hasAttribute('data-close'))return closeOverlays();
  const d=t.dataset;if(d.inc)bag[+d.inc].q=Math.min(9,bag[+d.inc].q+1);if(d.dec){const l=bag[+d.dec];l.q--;if(l.q<1)bag.splice(+d.dec,1)}if(d.rm)bag.splice(+d.rm,1);save();overlays.innerHTML=bagHTML();
 });
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlays.innerHTML)closeOverlays()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDD();if(overlays.innerHTML)closeOverlays()}});
 $('#cartBtn').onclick=openBag;
-$('#menuBtn').onclick=()=>{lastFocus=$('#menuBtn');overlays.innerHTML=`<nav class="mobile-nav" aria-label="Menu"><button class="icon-btn" data-close aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button><a href="#">Home</a><a href="#shop">Shop</a><a href="#about">About Elouve</a><a href="#exchange">Exchange &amp; Refund</a><a href="#contact">Contact</a></nav>`};
+$('#menuBtn').onclick=()=>{lastFocus=$('#menuBtn');overlays.innerHTML=`<nav class="mobile-nav" aria-label="Menu"><button class="icon-btn" data-close aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button><a href="#">Home</a><div class="mrow"><a href="#shop">Shop</a><button class="mchev" data-tog="m-shop" aria-expanded="false" aria-controls="m-shop" aria-label="Shop menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="msub" id="m-shop" hidden><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></div><a href="#about">About Elouve</a><a href="#contact">Contact</a><div class="mrow"><button class="mtoggle" data-tog="m-policies" aria-expanded="false" aria-controls="m-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="msub" id="m-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></nav>`};
 $('#searchBtn').onclick=()=>{const s=$('#searchBar'),open=s.hidden;s.hidden=!open;$('#searchBtn').setAttribute('aria-expanded',open);if(open)$('#searchInput').focus()};
-$('#searchForm').onsubmit=e=>{e.preventDefault();Object.assign(F,{q:$('#searchInput').value.trim(),cat:'All',color:'All',sale:false});$('#searchBar').hidden=true;$('#searchBtn').setAttribute('aria-expanded',false);if(location.hash==='#shop')route();else location.hash='shop'};
+$('#searchForm').onsubmit=e=>{e.preventDefault();Object.assign(F,{q:$('#searchInput').value.trim(),cat:'All',color:'All',col:'All',sale:false});keepF=true;$('#searchBar').hidden=true;$('#searchBtn').setAttribute('aria-expanded',false);if(location.hash==='#shop')route();else location.hash='shop'};
 $('#newsForm').onsubmit=e=>{e.preventDefault();toast('Preview only: this email was not saved.');e.target.reset()};
 document.addEventListener('click',e=>{const a=e.target.closest('a[href="#shop"]');if(!a)return;
- if(a.dataset.cat||a.dataset.sale)Object.assign(F,{cat:a.dataset.cat||'All',color:'All',sale:!!a.dataset.sale,q:''});
- else if(!a.closest('.filters'))Object.assign(F,{cat:'All',color:'All',sale:false,q:''});
- if(location.hash==='#shop'){e.preventDefault();route()}
+ if(a.dataset.cat||a.dataset.sale)Object.assign(F,{cat:a.dataset.cat||'All',color:'All',sale:!!a.dataset.sale,col:'All',q:''});
+ else if(!a.closest('.filters'))Object.assign(F,{cat:'All',color:'All',col:'All',sale:false,q:''});
+ keepF=true;if(location.hash==='#shop'){e.preventDefault();route()}
 });
+$$('#mainNav [data-tog]').forEach(b=>b.onclick=e=>{e.stopPropagation();const d=document.getElementById(b.dataset.tog),o=d.hidden;closeDD();d.hidden=!o;b.setAttribute('aria-expanded',o)});
+document.addEventListener('click',e=>{if(!e.target.closest('.navgrp')||e.target.closest('.dd a'))closeDD()});
 addEventListener('hashchange',route);updateCount();route();
 </script>
 
