@@ -66,6 +66,9 @@ nav.main .grpbtn:hover,nav.main .grpbtn[aria-current]{border-bottom-color:var(--
 .dd{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:12px;min-width:230px;background:var(--paper);border:1px solid var(--line);padding:8px 0;z-index:12;display:grid}
 nav.main .dd a{padding:11px 22px;white-space:nowrap;border-bottom:0}
 nav.main .dd a:hover{background:var(--mist);border-bottom-color:transparent}
+.subnav{display:flex;justify-content:center;gap:clamp(18px,2.6vw,36px);padding-bottom:13px;margin-top:-2px}
+.subnav a{text-decoration:none;font-size:.68rem;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);padding:3px 0;border-bottom:1px solid transparent}
+.subnav a:hover,.subnav a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--ink)}
 .count{position:absolute;top:2px;right:0;min-width:17px;height:17px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:.64rem;display:grid;place-items:center}
 .searchbar{border-top:1px solid var(--line);padding-block:12px}
 .searchbar form{display:flex;gap:12px;max-width:640px;margin:auto}
@@ -130,7 +133,7 @@ section.block{padding-bottom:clamp(56px,8vw,112px)}
 .pdp{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,5vw,80px);padding-block:clamp(16px,3vw,36px) clamp(56px,8vw,112px)}
 .gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:start}
 .gallery img{aspect-ratio:4/5;object-fit:cover;background:var(--mist)}
-.info{position:sticky;top:150px;align-self:start;display:grid;gap:22px}
+.info{position:sticky;top:190px;align-self:start;display:grid;gap:22px}
 .info h1{font-size:clamp(2.1rem,3.8vw,3.4rem)}
 .info .price{font-size:1.1rem}
 .info .lede{color:var(--muted)}
@@ -218,7 +221,7 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);background:var(--ink);color:var(--paper);padding:10px 18px;z-index:30;font-size:.88rem;max-width:calc(100% - 32px)}
 
 @media (max-width:860px){
-  nav.main{display:none}
+  nav.main,.subnav{display:none}
   #menuBtn{display:inline-flex}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .hero{display:block}
@@ -249,12 +252,12 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
     </div>
     <nav class="main" id="mainNav" aria-label="Main">
       <a href="#" data-g="">Home</a>
-      <div class="navgrp"><a href="#shop" data-g="shop">Shop</a><button class="chev" data-tog="dd-shop" aria-expanded="false" aria-controls="dd-shop" aria-label="Shop menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-        <div class="dd" id="dd-shop" hidden><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></div></div>
+      <a href="#shop" data-g="shop">Shop</a>
       <a href="#about" data-g="about">About Elouve</a><a href="#contact" data-g="contact">Contact</a>
       <div class="navgrp"><button class="grpbtn" data-g="policies" data-tog="dd-policies" aria-expanded="false" aria-controls="dd-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="dd" id="dd-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></div>
     </nav>
+    <nav class="subnav" id="subNav" aria-label="Shop collections"><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></nav>
   </div>
   <div class="searchbar wrap" id="searchBar" hidden><form id="searchForm" role="search"><input id="searchInput" type="search" placeholder="Search the collection" aria-label="Search the collection"><button class="btn ghost" style="min-height:40px;padding:0 18px">Search</button></form></div>
 </header>
@@ -367,6 +370,7 @@ function route(){const r=location.hash.slice(1);const p=by(r);const c=COLL[r];
  if(c){if(!keepF&&r!==lastShopR)Object.assign(F,{cat:'All',color:'All',col:'All',sale:false,q:''});F.col=c.col||'All';if(c.sale)F.sale=true;curR=r;lastShopR=r}
  const g=(p||c)?'shop':(['exchange','shipping','privacy'].includes(r)?'policies':r);
  $$('#mainNav [data-g]').forEach(a=>a.dataset.g===g?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ $$('#subNav a').forEach(a=>a.getAttribute('href')==='#'+r?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
  document.title=p?p.name+' | Elouve':(c&&r!=='shop'?c.t+' | Elouve':'Elouve');
  if(p)product(p);
  else if(c){app.innerHTML=shop();$('#sort').value=F.sort;renderResults();
@@ -398,7 +402,7 @@ overlays.addEventListener('click',e=>{const t=e.target.closest('[data-close],[da
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDD();if(overlays.innerHTML)closeOverlays()}});
 $('#cartBtn').onclick=openBag;
-$('#menuBtn').onclick=()=>{lastFocus=$('#menuBtn');overlays.innerHTML=`<nav class="mobile-nav" aria-label="Menu"><button class="icon-btn" data-close aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button><a href="#">Home</a><div class="mrow"><a href="#shop">Shop</a><button class="mchev" data-tog="m-shop" aria-expanded="false" aria-controls="m-shop" aria-label="Shop menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="msub" id="m-shop" hidden><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></div><a href="#about">About Elouve</a><a href="#contact">Contact</a><div class="mrow"><button class="mtoggle" data-tog="m-policies" aria-expanded="false" aria-controls="m-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="msub" id="m-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></nav>`};
+$('#menuBtn').onclick=()=>{lastFocus=$('#menuBtn');overlays.innerHTML=`<nav class="mobile-nav" aria-label="Menu"><button class="icon-btn" data-close aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button><a href="#">Home</a><a href="#shop">Shop</a><div class="msub"><a href="#summer-collection">Summer Collection</a><a href="#winter-collection">Winter Collection</a><a href="#on-sale">On Sale</a></div><a href="#about">About Elouve</a><a href="#contact">Contact</a><div class="mrow"><button class="mtoggle" data-tog="m-policies" aria-expanded="false" aria-controls="m-policies">Policies <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div><div class="msub" id="m-policies" hidden><a href="#exchange">Exchange &amp; Refund</a><a href="#shipping">Shipping &amp; Delivery</a><a href="#privacy">Privacy Policy</a></div></nav>`};
 $('#searchBtn').onclick=()=>{const s=$('#searchBar'),open=s.hidden;s.hidden=!open;$('#searchBtn').setAttribute('aria-expanded',open);if(open)$('#searchInput').focus()};
 $('#searchForm').onsubmit=e=>{e.preventDefault();Object.assign(F,{q:$('#searchInput').value.trim(),cat:'All',color:'All',col:'All',sale:false});keepF=true;$('#searchBar').hidden=true;$('#searchBtn').setAttribute('aria-expanded',false);if(location.hash==='#shop')route();else location.hash='shop'};
 $('#newsForm').onsubmit=e=>{e.preventDefault();toast('Preview only: this email was not saved.');e.target.reset()};
