@@ -125,6 +125,12 @@ section.block{padding-bottom:clamp(56px,8vw,112px)}
 .chip{background:none;border:1px solid var(--line);padding:6px 13px;font-size:.8rem}
 .chip:hover{border-color:var(--ink)}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.shapes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(8px,1.4vw,20px);margin-bottom:clamp(20px,3vw,32px)}
+.shape{position:relative;display:block;padding:0;border:0;background:var(--mist);aspect-ratio:5/6;overflow:hidden;text-align:left}
+.shape img{height:100%;object-fit:cover;transition:transform .8s}
+.shape:hover img{transform:scale(1.035)}
+.shape span{position:absolute;left:0;bottom:0;background:var(--paper);padding:6px 14px 2px 0;font-family:var(--display);font-size:clamp(1rem,2vw,1.6rem)}
+.shape[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:3px}
 .filters .end{margin-left:auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .filters select{background:none;border:0;border-bottom:1px solid var(--ink);padding:5px 2px;border-radius:0}
 .empty{padding-block:60px;text-align:center;display:grid;gap:16px;justify-items:center}
@@ -224,13 +230,14 @@ footer.site{background:var(--ink);color:var(--on-ink);padding-block:clamp(44px,6
   nav.main,.subnav{display:none}
   #menuBtn{display:inline-flex}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .shapes{grid-template-columns:repeat(3,minmax(0,1fr))}
   .hero{display:block}
   .hero-img{aspect-ratio:4/4.2;height:auto}
   .hero-panel{margin:-64px 16px 0 0;position:relative}
   .story,.pdp,.twoc{grid-template-columns:minmax(0,1fr)}
   .info{position:static}
   .fgrid{grid-template-columns:minmax(0,1fr)}
-  .filters .end{margin-left:0;width:100%;justify-content:space-between}
+  .filters .end{margin-left:auto}
 }
 @media (max-width:430px){
   .form .row{grid-template-columns:minmax(0,1fr)}
@@ -315,19 +322,19 @@ function card(p){return `<a class="card" href="#${p.id}"><span class="pic">${p.s
 function home(){const feat=['wide-trouser','column-dress','long-shirt','soft-blazer'].map(by);
 return `<div class="wrap"><div class="hero"><img class="hero-img" src="img/hero.webp" alt="Folds of sand-coloured cloth"><div class="hero-panel on-ink"><h1>Clothes that outlast the season</h1><p>Considered shapes in linen, poplin and satin, in colours that work together year after year.</p><a class="btn light" href="#shop">Shop the collection</a></div></div></div>
 <section class="block wrap"><div class="head"><h2>The essentials</h2><a class="textlink" href="#shop">View all</a></div><div class="grid">${feat.map(card).join('')}</div></section>
-<section class="block wrap"><div class="head"><h2>Shop by shape</h2></div><div class="cats">${[['Trousers','trouser-sand'],['Dresses','dress-clay'],['Outerwear','blazer-taupe']].map(([c,i])=>`<a class="cat" href="#shop" data-cat="${c}"><img loading="lazy" src="img/${i}.webp" alt=""><span>${c}</span></a>`).join('')}</div></section>
 <section class="band on-ink"><div class="wrap"><span class="caps">On sale now</span><h2>Selected pieces, reduced</h2><p>A short edit of skirts, tops and trousers from earlier collections.</p><a class="btn light" href="#on-sale">Shop the sale</a></div></section>
 <section class="block wrap story"><img loading="lazy" src="img/story.webp" alt="Taupe cloth falling in soft folds"><div class="text"><span class="caps">About Elouve</span><h2>Less to choose, more to keep</h2><p>Elouve makes a small wardrobe of pieces that belong together. Each one starts with a clean line and a fabric that gets better with wear.</p><a class="btn ghost" href="#about">Read our story</a></div></section>`}
 
 const F={cat:'All',color:'All',col:'All',sale:false,sort:'featured',q:''};
+const SHAPES=[['Trousers','trouser-sand'],['Dresses','dress-clay'],['Tops','top-chalk'],['Skirts','skirt-olive'],['Outerwear','blazer-taupe']];
 const COLL={shop:{t:'The collection'},'summer-collection':{t:'Summer Collection',col:'Summer'},'winter-collection':{t:'Winter Collection',col:'Winter'},'on-sale':{t:'On Sale',sale:true}};
 let curR='shop',lastShopR=null,keepF=false;
 function closeDD(){$$('#mainNav .dd').forEach(d=>d.hidden=true);$$('#mainNav [data-tog]').forEach(b=>b.setAttribute('aria-expanded','false'))}
 function shop(){const cats=['All',...new Set(P.map(p=>p.cat))];
 return `<div class="wrap"><div class="page-head"><h1>${F.q?`Results for “${esc(F.q)}”`:COLL[curR].t}</h1><p>Sample products and prices, ready to swap for your real catalogue.</p></div>
-<div class="filters"><div class="chips" role="group" aria-label="Category">${cats.map(c=>`<button class="chip" data-f="cat" data-v="${c}" aria-pressed="${F.cat===c}">${c}</button>`).join('')}</div>
-<div class="chips" role="group" aria-label="Colour"><button class="chip" data-f="color" data-v="All" aria-pressed="${F.color==='All'}">All colours</button>${Object.keys(COLORS).map(c=>`<button class="chip" data-f="color" data-v="${c}" aria-pressed="${F.color===c}">${COLORS[c][0]}</button>`).join('')}</div>
-<div class="end"><button class="chip" data-f="sale" aria-pressed="${F.sale}">On sale</button><label class="small" for="sort">Sort <select id="sort"><option value="featured">Featured</option><option value="low">Price, low to high</option><option value="high">Price, high to low</option><option value="az">A to Z</option></select></label><span class="small tnum" id="resultCount"></span></div></div>
+<span class="caps" style="display:block;margin-bottom:14px">Shop by shape</span>
+<div class="shapes" role="group" aria-label="Shop by shape">${SHAPES.map(([c,i])=>`<button class="shape" data-cat="${c}" aria-pressed="${F.cat===c}"><img loading="lazy" src="img/${i}.webp" alt=""><span>${c}</span></button>`).join('')}</div>
+<div class="filters"><span class="small tnum" id="resultCount"></span><div class="end"><label class="small" for="sort">Sort <select id="sort"><option value="featured">Featured</option><option value="low">Price, low to high</option><option value="high">Price, high to low</option><option value="az">A to Z</option></select></label></div></div>
 <div id="results" style="padding-bottom:clamp(56px,8vw,112px)"></div></div>`}
 function renderResults(){let r=P.filter(p=>(F.cat==='All'||p.cat===F.cat)&&(F.col==='All'||p.season===F.col)&&(F.color==='All'||p.colors.includes(F.color))&&(!F.sale||p.was)&&(!F.q||(p.name+' '+p.cat+' '+p.colors.map(c=>COLORS[c][0]).join(' ')).toLowerCase().includes(F.q.toLowerCase())));
  if(F.sort==='low')r=[...r].sort((a,b)=>a.price-b.price);if(F.sort==='high')r=[...r].sort((a,b)=>b.price-a.price);if(F.sort==='az')r=[...r].sort((a,b)=>a.name.localeCompare(b.name));
@@ -374,8 +381,7 @@ function route(){const r=location.hash.slice(1);const p=by(r);const c=COLL[r];
  document.title=p?p.name+' | Elouve':(c&&r!=='shop'?c.t+' | Elouve':'Elouve');
  if(p)product(p);
  else if(c){app.innerHTML=shop();$('#sort').value=F.sort;renderResults();
-   $$('.filters .chip').forEach(b=>b.onclick=()=>{const k=b.dataset.f;if(k==='sale')F.sale=!F.sale;else F[k]=b.dataset.v;
-     $$('.filters .chip').forEach(x=>x.setAttribute('aria-pressed',x.dataset.f==='sale'?F.sale:F[x.dataset.f]===x.dataset.v));renderResults()});
+   $$('.shape').forEach(b=>b.onclick=()=>{F.cat=F.cat===b.dataset.cat?'All':b.dataset.cat;$$('.shape').forEach(x=>x.setAttribute('aria-pressed',F.cat===x.dataset.cat));renderResults()});
    $('#sort').onchange=e=>{F.sort=e.target.value;renderResults()};}
  else if(r==='about')app.innerHTML=about();
  else if(r==='shipping')app.innerHTML=shipping();
